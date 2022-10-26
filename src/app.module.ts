@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 import {
   AppController,
   ArticleController,
@@ -11,6 +12,7 @@ import {
   RoleController,
   UserController,
 } from './controller';
+import { Article, User } from './entities';
 import {
   LoginService,
   UserService,
@@ -32,9 +34,10 @@ import {
       username: 'blog_dev',
       password: 'blog3363787543',
       database: 'blog_dev',
-      entities: [],
+      entities: [User, Article],
       synchronize: true,
     }),
+    TypeOrmModule.forFeature([User, Article]),
   ],
   controllers: [
     AppController,
@@ -60,4 +63,6 @@ import {
     CategoryService,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private dataSource: DataSource) {}
+}
